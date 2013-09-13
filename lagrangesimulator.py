@@ -39,8 +39,8 @@ class SimplePendulum(MechanicalSystem):
 
     def convert_to_cartesian(self):
         phi = self.result[:, 0]
-        x = self.l * np.sin(phi)
-        y = self.l * np.cos(phi)
+        x = self.l * np.sin(phi) * 100
+        y = self.l * np.cos(phi) * 100
 
         self.data = {
             "t": list(self.t),
