@@ -20,6 +20,7 @@ class MechanicalSystem(object):
         self.result, infodict = scipy.integrate.odeint(self, y0, t, full_output=True)
 
         self.t = infodict["tcur"]
+        self.y0 = y0
 
     def save_to_json(self, file_):
         self.convert_to_cartesian()
@@ -49,6 +50,10 @@ class SimplePendulum(MechanicalSystem):
                     "y": list(y),
                 },
             ],
+            "y0": {
+                "phi": self.y0[0],
+                "d/dt phi": self.y0[1],
+            },
         }
 
 class BallInCone(MechanicalSystem):
