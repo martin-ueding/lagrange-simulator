@@ -52,6 +52,49 @@ class SimplePendulum(MechanicalSystem):
             ],
         }
 
+class DoublePendulum(MechanicalSystem):
+    g = 9.81
+    l = 1.
+    l2 = l**2
+    m = 1
+
+    def __call__(self, y, t0):
+        theta1 = y[0]
+        theta2 = y[1]
+        p1 = y[2]
+        p2 = y[3]
+
+        dot_theta1 = 6 / (self.m * self.l2) * (2 * p1 - 3 * np.cos(theta1 - theta2) * p2) / (18 - 9 * np.cos(theta1 - theta2)**2)
+        dot_theta2 = 6 / (self.m * self.l2) * (8 * p2 - 3 * np.cos(theta1 - theta2) * p1) / (18 - 9 * np.cos(theta1 - theta2)**2)
+
+        dot_p1 = - 1/2 * self.m * self.l2 * (dot_theta1 * dot_theta2 * np.sin(theta1 - theta2) + 3 * self.g / self.l * np.sin(theta1))
+        dot_p2 = - 1/2 * self.m * self.l2 * (-dot_theta1 * dot_theta2 * np.sin(theta1 - theta2) + self.g / self.l * np.sin(theta2))
+
+        return [dot_theta1, dot_theta2, dot_p1, dot_p2]
+    
+    def convert_to_cartesian(self):
+        theta1 = self.result[:, 0]
+        theta2 = self.result[:, 1]
+        x1 = self.l * np.sin(theta1) * 100
+        y1 = self.l * np.cos(theta1) * 100
+        x2 = x1 + self.l * np.sin(theta2) * 100
+        y2 = y1 + self.l * np.cos(theta2) * 100
+
+        self.data = {
+            "t": list(self.t),
+            "points": [
+                {
+                    "x": list(x1),
+                    "y": list(y1),
+                },
+                {
+                    "x": list(x2),
+                    "y": list(y2),
+                },
+            ],
+        }
+
+
 
 def main():
     options = _parse_args()
@@ -61,9 +104,15 @@ def main():
     simple_pendulum = SimplePendulum()
     t = np.linspace(0, 10, 100)
     y0 = [.2, 0]
-
     simple_pendulum.solve(y0, t)
     simple_pendulum.save_to_json("Simple_Pendulum.js")
+
+    double_pendulum = DoublePendulum()
+    t = np.linspace(0, 5, 100)
+    y0 = [0, 2, 0, 0]
+    double_pendulum.solve(y0, t)
+    double_pendulum.save_to_json("Double_Pendulum.js")
+
 
 
 def _parse_args():

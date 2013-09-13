@@ -47,4 +47,4 @@ var animation_step = function() {
 	t_id += 1;
 }
 
-start("Simple_Pendulum.js");
+start("Double_Pendulum.js");
