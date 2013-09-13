@@ -105,13 +105,13 @@ def main():
     t = np.linspace(0, 10, 100)
     y0 = [.2, 0]
     simple_pendulum.solve(y0, t)
-    simple_pendulum.save_to_json("Simple_Pendulum.js")
+    simple_pendulum.save_to_json("Trajectories/Simple_Pendulum.js")
 
     double_pendulum = DoublePendulum()
     t = np.linspace(0, 20, 400)
     y0 = [np.pi/2, np.pi, 0, 0]
     double_pendulum.solve(y0, t)
-    double_pendulum.save_to_json("Double_Pendulum.js")
+    double_pendulum.save_to_json("Trajectories/Double_Pendulum.js")
 
 
 
