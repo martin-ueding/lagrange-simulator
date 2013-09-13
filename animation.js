@@ -35,10 +35,20 @@ var animation_step = function() {
 		return;
 
 	for (var point_id in data.points) {
+		var anim = {};
 		var t = data.t[t_id];
 		var x = data.points[point_id].x[t_id];
+		anim.cx = x + 2*l
 		var y = data.points[point_id].y[t_id];
-		var a1 = Raphael.animation({"cx": x + 2*l, "cy": y + 2*l}, (t-oldtime)*1000, "linear", point_id == 0 ? animation_step : function() {});
+		anim.cy = y + 2*l
+		if ("z" in data.points[point_id]) {
+			var z = data.points[point_id].y[t_id];
+			anim.r = 10 + z / 30;
+			if (anim.r < 1) {
+				anim.r = 1;
+			}
+		}
+		var a1 = Raphael.animation(anim, (t-oldtime)*1000, "linear", point_id == 0 ? animation_step : function() {});
 		circles[point_id].animate(a1);
 	}
 
