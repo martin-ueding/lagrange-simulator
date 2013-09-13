@@ -59,7 +59,7 @@ def main():
     pp = pprint.PrettyPrinter(indent=1, width=80)
 
     simple_pendulum = SimplePendulum()
-    t = np.linspace(0, 5, 100)
+    t = np.linspace(0, 10, 100)
     y0 = [.2, 0]
 
     simple_pendulum.solve(y0, t)
