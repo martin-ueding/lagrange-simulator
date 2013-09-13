@@ -53,9 +53,9 @@ class SimplePendulum(MechanicalSystem):
         }
 
 class BallInCone(MechanicalSystem):
-    g = 9.81
+    g = 100
     m = 1
-    beta = .5
+    beta = .8
 
     def __call__(self, y, t0):
         z = y[0]
@@ -156,7 +156,7 @@ def main():
 
     ball_in_cone = BallInCone()
     t = np.linspace(0, 20, 1000)
-    y0 = [10, 0, 0, 5]
+    y0 = [10, 0, 5, 5]
     ball_in_cone.solve(y0, t)
     ball_in_cone.save_to_json("Trajectories/Ball_in_Cone.js")
 

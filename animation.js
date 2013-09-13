@@ -43,7 +43,7 @@ var animation_step = function() {
 		anim.cy = y + 2*l
 		if ("z" in data.points[point_id]) {
 			var z = data.points[point_id].y[t_id];
-			anim.r = 10 + z / 30;
+			anim.r = 10 + z / 20;
 			if (anim.r < 1) {
 				anim.r = 1;
 			}
