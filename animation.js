@@ -1,6 +1,6 @@
 // Copyright © 2013 Martin Ueding <dev@martin-ueding.de>
 
-var l = 100;
+var l = 200;
 
 var start = function(filename) {
 	$("#holder").html("");
@@ -47,4 +47,4 @@ var animation_step = function() {
 	t_id += 1;
 }
 
-start("Double_Pendulum.js");
+start("Trajectories/Ball_in_Cone.js");

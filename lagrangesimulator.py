@@ -52,6 +52,47 @@ class SimplePendulum(MechanicalSystem):
             ],
         }
 
+class BallInCone(MechanicalSystem):
+    g = 9.81
+    m = 1
+    beta = .5
+
+    def __call__(self, y, t0):
+        z = y[0]
+        phi = y[1]
+        dot_z = y[2]
+        dot_phi = y[3]
+
+        ddt_z = dot_z
+        ddt_phi = dot_phi
+        ddt_dot_z = (self.beta**2 * dot_phi**2 * z - self.g) / (self.beta**2 + 1)
+        ddt_dot_phi = - 2 * dot_z * dot_phi / z
+
+        return [ddt_z, ddt_phi, ddt_dot_z, ddt_dot_phi]
+
+    def convert_to_cartesian(self):
+        z = self.result[:, 0]
+        phi = self.result[:, 1]
+        r = z * self.beta
+
+        stretch = 5
+
+        out_x = r * np.cos(phi) * stretch
+        out_z = r * np.sin(phi) * stretch
+        out_y = -z * stretch
+
+        self.data = {
+            "t": list(self.t),
+            "points": [
+                {
+                    "x": list(out_x),
+                    "y": list(out_y),
+                    "z": list(out_z),
+                },
+            ],
+        }
+
+
 class DoublePendulum(MechanicalSystem):
     g = 9.81
     l = 1.
@@ -113,6 +154,11 @@ def main():
     double_pendulum.solve(y0, t)
     double_pendulum.save_to_json("Trajectories/Double_Pendulum.js")
 
+    ball_in_cone = BallInCone()
+    t = np.linspace(0, 20, 1000)
+    y0 = [10, 0, 0, 5]
+    ball_in_cone.solve(y0, t)
+    ball_in_cone.save_to_json("Trajectories/Ball_in_Cone.js")
 
 
 def _parse_args():
