@@ -26,7 +26,6 @@ class MechanicalSystem(object):
         with open(file_, "w") as f:
             f.write(json.dumps(self.data, indent=4, sort_keys=True))
 
-
 class SimplePendulum(MechanicalSystem):
     g = 9.81
     l = 1.
@@ -51,7 +50,6 @@ class SimplePendulum(MechanicalSystem):
                 },
             ],
         }
-
 
 class BallInCone(MechanicalSystem):
     g = 100
@@ -92,7 +90,6 @@ class BallInCone(MechanicalSystem):
                 },
             ],
         }
-
 
 class DoublePendulum(MechanicalSystem):
     g = 9.81
@@ -173,8 +170,6 @@ class SpringPendulum(MechanicalSystem):
             ],
         }
 
-
-
 def main():
     options = _parse_args()
 
@@ -204,8 +199,6 @@ def main():
     spring_pendulum.solve(y0, t)
     spring_pendulum.save_to_json("Trajectories/Spring_Pendulum.js")
 
-
-
 def _parse_args():
     """
     Parses the command line arguments.
@@ -219,7 +212,6 @@ def _parse_args():
     #parser.add_argument("--version", action="version", version="<the version>")
 
     return parser.parse_args()
-
 
 if __name__ == "__main__":
     main()
