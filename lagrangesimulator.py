@@ -94,6 +94,12 @@ class BallInCone(MechanicalSystem):
                     "z": list(out_z),
                 },
             ],
+            "y0": {
+                "z": self.y0[0],
+                "phi": self.y0[1],
+                "d/dt z": self.y0[2],
+                "d/dt phi": self.y0[3],
+            },
         }
 
 class DoublePendulum(MechanicalSystem):
@@ -136,6 +142,12 @@ class DoublePendulum(MechanicalSystem):
                     "y": list(y2),
                 },
             ],
+            "y0": {
+                "theta_1": self.y0[0],
+                "theta_2": self.y0[1],
+                "p_1": self.y0[2],
+                "p_2": self.y0[3],
+            },
         }
 
 class SpringPendulum(MechanicalSystem):
@@ -173,6 +185,12 @@ class SpringPendulum(MechanicalSystem):
                     "y": list(y),
                 },
             ],
+            "y0": {
+                "r": self.y0[0],
+                "phi": self.y0[1],
+                "d/dt r": self.y0[2],
+                "d/dt phi": self.y0[3],
+            },
         }
 
 def main():
