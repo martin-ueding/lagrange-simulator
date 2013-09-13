@@ -57,4 +57,4 @@ var animation_step = function() {
 	t_id += 1;
 }
 
-start("Trajectories/Ball_in_Cone.js");
+start("Trajectories/Spring_Pendulum.js");
