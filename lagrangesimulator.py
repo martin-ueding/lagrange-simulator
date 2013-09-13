@@ -29,7 +29,7 @@ class MechanicalSystem(object):
 
 class SimplePendulum(MechanicalSystem):
     g = 9.81
-    l = .1
+    l = 1.
     l2 = l**2
 
     def __call__(self, y, t0):
@@ -39,8 +39,8 @@ class SimplePendulum(MechanicalSystem):
 
     def convert_to_cartesian(self):
         phi = self.result[:, 0]
-        x = self.l * np.sin(phi) * 1000
-        y = self.l * np.cos(phi) * 1000
+        x = self.l * np.sin(phi) * 100
+        y = self.l * np.cos(phi) * 100
 
         self.data = {
             "t": list(self.t),
@@ -59,7 +59,7 @@ def main():
     pp = pprint.PrettyPrinter(indent=1, width=80)
 
     simple_pendulum = SimplePendulum()
-    t = np.linspace(0, 5, 10)
+    t = np.linspace(0, 5, 100)
     y0 = [.2, 0]
 
     simple_pendulum.solve(y0, t)

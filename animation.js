@@ -18,11 +18,11 @@ var start = function(filename) {
 
 var start_animation = function() {
 	t_id = 0;
-	oldtime = -1.5;
+	oldtime = 0.0;
 
 	circles = [];
 	for (var point_id in data.points) {
-		circles[point_id] = paper.circle(data.points[point_id].x[0], data.points[point_id].y[0], 10);
+		circles[point_id] = paper.circle(data.points[point_id].x[0] + 2*l, data.points[point_id].y[0] + 2*l, 10);
 		circles[point_id].attr("fill", "#0A0");
 		circles[point_id].attr("stroke", "#000");
 	}
