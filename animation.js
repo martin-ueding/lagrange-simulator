@@ -1,8 +1,10 @@
 // Copyright © 2013 Martin Ueding <dev@martin-ueding.de>
 
-var l = 200;
+var l = 150;
 
-var start = function(filename) {
+var start = function() {
+	var filename = window.location.hash.substring(1);
+	console.log(filename);
 	$("#holder").html("");
 	paper = Raphael("holder", 4*l, 4*l+10);
 	midpoint = paper.circle(2*l, 2*l, 5);
@@ -57,4 +59,10 @@ var animation_step = function() {
 	t_id += 1;
 }
 
-start("Trajectories/Spring_Pendulum.js");
+var restart = function() {
+	t_id = 1e80;
+
+	setTimeout(start, 500);
+}
+
+start();
