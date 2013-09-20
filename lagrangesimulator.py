@@ -103,24 +103,34 @@ class BallInCone(MechanicalSystem):
         }
 
 class DoublePendulum(MechanicalSystem):
-    g = 9.81
+    g = -9.81
     l = 1.
     l2 = l**2
     m = 1
 
     def __call__(self, y, t0):
-        theta1 = y[0]
-        theta2 = y[1]
-        p1 = y[2]
-        p2 = y[3]
+        phi1 = y[0]
+        phi2 = y[1]
+        dot_phi1 = y[2]
+        dot_phi2 = y[3]
 
-        dot_theta1 = 6 / (self.m * self.l2) * (2 * p1 - 3 * np.cos(theta1 - theta2) * p2) / (18 - 9 * np.cos(theta1 - theta2)**2)
-        dot_theta2 = 6 / (self.m * self.l2) * (8 * p2 - 3 * np.cos(theta1 - theta2) * p1) / (18 - 9 * np.cos(theta1 - theta2)**2)
+        ddt_phi1 = dot_phi1
+        ddt_phi2 = dot_phi2
 
-        dot_p1 = - 1/2 * self.m * self.l2 * (dot_theta1 * dot_theta2 * np.sin(theta1 - theta2) + 3 * self.g / self.l * np.sin(theta1))
-        dot_p2 = - 1/2 * self.m * self.l2 * (-dot_theta1 * dot_theta2 * np.sin(theta1 - theta2) + self.g / self.l * np.sin(theta2))
+        ddt_dot_phi1 = (- 1/2 * np.sin(phi1 - phi2)
+                + self.g / self.l * np.sin(phi1)
+                + 1/2 * dot_phi2 * np.sin(phi1 - phi2) * (dot_phi1 - dot_phi2)
+                - 1/2 * (
+                    1/2 * np.sin(phi1 - phi2)
+                + self.g / (2 * self.l) * np.sin(phi2)
+                + 1/2 * dot_phi1 * np.sin(phi1 - phi2) * (dot_phi1 - dot_phi2))
+                * np.cos(phi1 - phi2)) / (1 - 1/4 * np.cos(phi1 - phi2))
 
-        return [dot_theta1, dot_theta2, dot_p1, dot_p2]
+        ddt_dot_phi2 = - 1/2 * np.sin(phi1 - phi2) \
+                + self.g / (2 * self.l) * np.sin(phi2) \
+                - 1/2 * ddt_dot_phi1 * np.cos(phi1 - phi2) + 1/2 * dot_phi1 * np.sin(phi1 - phi2) * (phi1 - phi2)
+
+        return [ddt_phi1, ddt_phi2, ddt_dot_phi1, ddt_dot_phi2]
     
     def convert_to_cartesian(self):
         theta1 = self.result[:, 0]
@@ -200,13 +210,13 @@ def main():
 
     simple_pendulum = SimplePendulum()
     t = np.linspace(0, 10, 100)
-    y0 = [.2, 0]
+    y0 = [np.pi/1.5, 0]
     simple_pendulum.solve(y0, t)
     simple_pendulum.save_to_json("Trajectories/Simple_Pendulum.js")
 
     double_pendulum = DoublePendulum()
     t = np.linspace(0, 20, 400)
-    y0 = [np.pi/2, np.pi, 0, 0]
+    y0 = [np.pi/2, np.pi/2, 0, 0]
     double_pendulum.solve(y0, t)
     double_pendulum.save_to_json("Trajectories/Double_Pendulum.js")
 
