@@ -193,6 +193,55 @@ class SpringPendulum(MechanicalSystem):
             },
         }
 
+class SlidingPendulum(MechanicalSystem):
+    g = 9.81
+    l = 1.
+    l2 = l**2
+    m = 1
+
+    def __call__(self, y, t0):
+        x = y[0]
+        phi = y[1]
+        dot_x = y[2]
+        dot_phi = y[3]
+
+        ddt_x = dot_x
+        ddt_phi = dot_phi
+
+        ddt_dot_x = (- self.l / (2 * self.m) * np.cos(phi) * (- self.m / (2 * self.l) * np.sin(phi) * dot_phi + self.m * self.g / self.l * np.sin(phi) + self.m / (2 * self.l) * dot_x * np.sin(phi) * dot_phi) + self.l / (2 * self.m) * np.sin(phi) * dot_phi**2) / (1 - 1/4 * np.cos(phi)**2)
+
+        ddt_dot_phi = - self.m / (2 * self.l) * np.sin(phi) * dot_phi + self.m * self.g / self.l * np.sin(phi) - self.m / (2 * self.l) * ddt_dot_x * np.sin(phi) + self.m / (2 * self.l) * dot_x * np.sin(phi) * dot_phi
+
+        return [ddt_x, ddt_phi, ddt_dot_x, ddt_dot_phi]
+    
+    def convert_to_cartesian(self):
+        x = self.result[:, 0]
+        phi = self.result[:, 1]
+        x1 = x
+        y1 = x * 0
+        x2 = x1 + self.l * np.sin(phi) * 100
+        y2 = self.l * np.cos(phi) * 100
+
+        self.data = {
+            "t": list(self.t),
+            "points": [
+                {
+                    "x": list(x1),
+                    "y": list(y1),
+                },
+                {
+                    "x": list(x2),
+                    "y": list(y2),
+                },
+            ],
+            "y0": {
+                "x": self.y0[0],
+                "phi": self.y0[1],
+                "d/dt x": self.y0[2],
+                "d/dt phi": self.y0[3],
+            },
+        }
+
 def main():
     options = _parse_args()
 
@@ -221,6 +270,12 @@ def main():
     y0 = [1, 1, 0, 0]
     spring_pendulum.solve(y0, t)
     spring_pendulum.save_to_json("Trajectories/Spring_Pendulum.js")
+
+    sliding_pendulum = SlidingPendulum()
+    t = np.linspace(0, 20, 1000)
+    y0 = [0, 0, 1, -1]
+    sliding_pendulum.solve(y0, t)
+    sliding_pendulum.save_to_json("Trajectories/Sliding_Pendulum.js")
 
 def _parse_args():
     """
