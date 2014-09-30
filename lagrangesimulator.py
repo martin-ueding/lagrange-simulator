@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-# Copyright © 2013 Martin Ueding <dev@martin-ueding.de>
+# Copyright © 2013-2014 Martin Ueding <dev@martin-ueding.de>
 
 import argparse
 import json
@@ -152,7 +152,7 @@ class DoublePendulum(MechanicalSystem):
 
 class SpringPendulum(MechanicalSystem):
     g = 9.81
-    k = 10
+    k = 40
     l = 1.
     l2 = l**2
     m = 1
@@ -166,8 +166,8 @@ class SpringPendulum(MechanicalSystem):
         ddt_r = dot_r
         ddt_phi = dot_phi
 
-        ddt_dot_r = r * dot_phi**2 - 2 * self.k * (1 - self.l / r)
-        ddt_dot_phi = - self.g * np.sin(phi) / r**2 - dot_r * dot_phi / r
+        ddt_dot_r = r * dot_phi**2 + self.g * np.cos(phi) - self.k / self.m * (r - self.l)
+        ddt_dot_phi = - self.g * np.sin(phi) / r - 2 * dot_r * dot_phi / r
 
         return [ddt_r, ddt_phi, ddt_dot_r, ddt_dot_phi]
     
@@ -267,7 +267,7 @@ def main():
 
     spring_pendulum = SpringPendulum()
     t = np.linspace(0, 20, 1000)
-    y0 = [1, 1, 0, 0]
+    y0 = [1, 2, 0, 0]
     spring_pendulum.solve(y0, t)
     spring_pendulum.save_to_json("Trajectories/Spring_Pendulum.js")
 
