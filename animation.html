@@ -8,14 +8,12 @@
     </head>
     <body>
         <div id="holder"></div>
-        <div style="display: none;"><pre><code id="data"></code></pre></div>
-            <script type="text/javascript" src="animation.js"></script>
+        <script type="text/javascript" src="animation.js"></script>
 
-            <input type="button" onclick="restart();" value="Restart" />
-            <a onclick="restart();" href="#Trajectories/Ball_in_Cone.js">Ball in Cone</a>
-            <a onclick="restart();" href="#Trajectories/Double_Pendulum.js">Double Pendulum</a>
-            <a onclick="restart();" href="#Trajectories/Simple_Pendulum.js">Simple Pendulum</a>
-            <a onclick="restart();" href="#Trajectories/Spring_Pendulum.js">Spring Pendulum</a>
-            <a onclick="restart();" href="#Trajectories/Sliding_Pendulum.js">Sliding Pendulum</a>
+        <input type="button" onclick="start_animation(ball_in_cone);" value="Ball in Cone" />
+        <input type="button" onclick="start_animation(double_pendulum);" value="Double Pendulum" />
+        <input type="button" onclick="start_animation(simple_pendulum);" value="Simple Pendulum" />
+        <input type="button" onclick="start_animation(spring_pendulum);" value="Spring Pendulum" />
+        <!-- <input type="button" onclick="start_animation(sliding_pendulum);" value="Sliding Pendulum" /> -->
     </body>
 </html>
