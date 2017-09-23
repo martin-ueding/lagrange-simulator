@@ -186,7 +186,7 @@ var sliding_pendulum = {
 }
 
 
-var start = function() {
+var start = function(system) {
     //var filename = window.location.hash.substring(1);
     $("#holder").html("");
     paper = Raphael("holder", 4*l, 4*l+10);
@@ -242,5 +242,3 @@ var animation_step = function(system, y, i, my_id) {
 }
 
 var global_id = 0;
-
-start();
