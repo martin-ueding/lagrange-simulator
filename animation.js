@@ -194,7 +194,7 @@ var start = function(system) {
     midpoint.attr("fill", "#000");
     midpoint.attr("stroke", "#000");
 
-    start_animation(double_pendulum);
+    start_animation(system);
 };
 
 var circles = [];
